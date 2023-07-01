@@ -1,56 +1,39 @@
-# ---
-# - name: Install Docker
-#   hosts: all
-#   become: true
-#   tasks:
-#     - name: Install dependencies
-#       apt:
-#         name:
-#           - apt-transport-https
-#           - ca-certificates
-#           - curl
-#           - gnupg
-#           - lsb-release
-#         state: present
-
-#     - name: Add Docker GPG key
-#       apt_key:
-#         url: https://download.docker.com/linux/ubuntu/gpg
-#         state: present
-
-#     - name: Add Docker repository
-#       apt_repository:
-#         repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable"
-#         state: present
-
-#     - name: Update apt cache
-#       apt:
-#         update_cache: yes
-
-#     - name: Install Docker
-#       apt:
-#         name: docker-ce
-#         state: present
-
-#     - name: Start and enable Docker service
-#       service:
-#         name: docker
-#         state: started
-#         enabled: yes
 ---
-- name: Install curl, apt-transport-https, and Docker
+- name: Install Docker
   hosts: all
   become: true
-
   tasks:
-    - name: Install curl and apt-transport-https
+    - name: Install dependencies
       apt:
         name:
-          - curl
           - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
         state: present
 
-    - name: Install Docker using curl
-      shell: curl -sSL https://get.docker.com/ | sh
-      args:
-        warn: false
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable"
+        state: present
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+
+    - name: Start and enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
