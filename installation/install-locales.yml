@@ -1,0 +1,21 @@
+---
+- name: Update system packages and install locales
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Clean apt cache
+      apt:
+        autoclean: yes
+
+    - name: Update system packages
+      apt:
+        update_cache: yes
+
+    - name: Install locales package
+      apt:
+        name: locales
+        state: present
+
+    - name: Generate en_US.UTF-8 locale
+      command: locale-gen en_US.UTF-8
